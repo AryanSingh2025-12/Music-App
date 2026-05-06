@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Music App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Optional favicon fix -->
+  <link rel="icon" href="data:,">
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- ===== LEFT PANEL ===== -->
+  <div class="screen home">
+
+    <h2 class="title">🎧 Music App</h2>
+
+    <!-- Search -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search songs...">
+      <button onclick="searchSongs()">🔍</button>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories">
+      <span class="active">All</span>
+      <span>Party</span>
+      <span>Blues</span>
+      <span>Sad</span>
+    </div>
+
+    <h4>Search Results</h4>
+
+    <!-- Results -->
+    <div id="results"></div>
+
+  </div>
+
+
+  <!-- ===== RIGHT PANEL (PLAYER) ===== -->
+  <div class="screen player">
+
+    <!-- Album Image -->
+    <img id="albumImage"
+      src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4"
+      class="album">
+
+    <!-- Play Circle -->
+    <div class="player-circle">
+      <div class="inner-circle" onclick="togglePlay()">▶</div>
+    </div>
+
+    <!-- Song Info -->
+    <h2 id="songTitle">No song selected</h2>
+    <p class="artist">Select a song to play</p>
+
+    <!-- ===== PROGRESS BAR ===== -->
+    <div class="progress-container" onclick="seek(event)">
+      <span id="currentTime">0:00</span>
+
+      <div class="progress-bar">
+        <div id="progress"></div>
+      </div>
+
+      <span id="duration">0:00</span>
+    </div>
+
+    <!-- ===== CONTROLS ===== -->
+    <div class="controls">
+      <button onclick="prevSong()">⏮</button>
+      <button onclick="togglePlay()">⏯</button>
+      <button onclick="nextSong()">⏭</button>
+    </div>
+
+    <!-- ===== VOLUME ===== -->
+    <div class="volume-container">
+      🔊
+      <input type="range"
+             min="0"
+             max="100"
+             value="100"
+             onchange="setVolume(this.value)">
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ===== MINI PLAYER ===== -->
+<div class="mini-player">
+
+  <img id="miniImg"
+       src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4">
+
+  <div class="mini-info">
+    <p id="miniTitle">No song</p>
+  </div>
+
+  <button onclick="togglePlay()">⏯</button>
+
+</div>
+
+
+<!-- Hidden YouTube Player -->
+<div id="player"></div>
+
+
+<!-- Scripts -->
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,268 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* ===== BODY ===== */
+body {
+  background: radial-gradient(circle at top, #0a0f0a, #000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+}
+
+/* ===== APP LAYOUT ===== */
+.app {
+  display: flex;
+  gap: 20px;
+}
+
+/* ===== SCREEN CARD ===== */
+.screen {
+  width: 320px;
+  height: 700px;
+  border-radius: 30px;
+  padding: 20px;
+  background: linear-gradient(145deg, #0f1a0f, #1c2b1c);
+  box-shadow: 0 0 25px rgba(0,255,120,0.2);
+  overflow-y: auto;
+}
+
+/* ===== TITLE ===== */
+.title {
+  margin-bottom: 10px;
+}
+
+/* ===== SEARCH ===== */
+.search-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+}
+
+.search-box button {
+  padding: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #00ff88;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00ff88;
+}
+
+/* ===== CATEGORIES ===== */
+.categories {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.categories span {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #222;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.categories .active {
+  background: #00ff88;
+  color: black;
+}
+
+/* ===== RESULTS ===== */
+#results {
+  margin-top: 10px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* Scrollbar */
+#results::-webkit-scrollbar {
+  width: 5px;
+}
+#results::-webkit-scrollbar-thumb {
+  background: #00ff88;
+  border-radius: 10px;
+}
+
+/* Song Card */
+.song-card {
+  padding: 12px;
+  background: #1c2b1c;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.song-card:hover {
+  background: #00ff88;
+  color: black;
+  transform: scale(1.03);
+}
+
+/* ===== PLAYER ===== */
+.player {
+  text-align: center;
+}
+
+/* Album */
+.album {
+  width: 100%;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+/* ===== NEON CIRCLE ===== */
+.player-circle {
+  width: 180px;
+  height: 180px;
+  margin: 10px auto;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,255,120,0.3), transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.player-circle::before {
+  content: "";
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 4px solid #00ff88;
+  box-shadow: 0 0 20px #00ff88;
+}
+
+/* Inner Play Button */
+.inner-circle {
+  width: 80px;
+  height: 80px;
+  background: #00ff88;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* ===== TEXT ===== */
+.artist {
+  opacity: 0.6;
+  margin-bottom: 10px;
+}
+
+/* ===== PROGRESS ===== */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: #333;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#progress {
+  width: 0%;
+  height: 100%;
+  background: #00ff88;
+}
+
+/* ===== CONTROLS ===== */
+.controls {
+  margin-top: 10px;
+}
+
+.controls button {
+  font-size: 20px;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #00ff88;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00ff88;
+}
+
+/* ===== VOLUME ===== */
+.volume-container {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.volume-container input {
+  width: 80%;
+}
+
+/* ===== MINI PLAYER ===== */
+.mini-player {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 400px;
+  background: #111;
+  padding: 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 0 15px #00ff88;
+}
+
+.mini-player img {
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+}
+
+.mini-info {
+  flex: 1;
+}
+
+.mini-info p {
+  font-size: 14px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .screen {
+    width: 90%;
+    height: auto;
+  }
+
+  .mini-player {
+    width: 95%;
+  }
+}
