@@ -100,55 +100,93 @@ function displayResults(items) {
 
 // ================= PLAY =================
 function playSong(index) {
+
   currentIndex = index;
 
   const item = playlist[index];
-  if (!item || !item.id.videoId) return;
+
+  if (!item || !item.id.videoId) {
+    nextSong();
+    return;
+  }
 
   const videoId = item.id.videoId;
+
   const title = item.snippet.title;
+
   const thumbnail = item.snippet.thumbnails.high.url;
 
+
+  // 🔥 OPEN PLAYER SCREEN
+  openPlayer();
+
+
+  // ===== UPDATE UI =====
   document.getElementById("songTitle").innerText = title;
+
   document.getElementById("albumImage").src = thumbnail;
+
   document.getElementById("miniImg").src = thumbnail;
+
   document.getElementById("miniTitle").innerText = title;
 
+
+  // ===== PLAYER CHECK =====
   if (!playerReady) {
     alert("Player not ready. Refresh once.");
     return;
   }
 
-  // 🔥 Load muted first
+
+  // ===== LOAD SONG =====
   player.loadVideoById(videoId);
 
-  // 🔥 THEN force play + sound
+
+  // ===== SOUND FIX =====
   setTimeout(() => {
-    try {
-      player.playVideo();     // required
-      player.unMute();        // 🔊 enable sound
-      player.setVolume(100);  // max volume
-    } catch (e) {
-      console.log("Play error", e);
-    }
-  }, 800);
+
+    player.unMute();
+
+    player.setVolume(100);
+
+  }, 500);
+
+
+  isPlaying = true;
+
+  updatePlayIcon();
+
 }
 
 
 // ================= PLAY / PAUSE =================
-function togglePlay() {
+function togglePlay(event) {
+
+  // Prevent mini player click conflict
+  if (event) {
+    event.stopPropagation();
+  }
+
   if (!playerReady) return;
 
   if (isPlaying) {
+
     player.pauseVideo();
+
     isPlaying = false;
+
   } else {
+
     player.playVideo();
+
     player.unMute();
+
     isPlaying = true;
+
   }
 
   updatePlayIcon();
+
 }
 
 
@@ -163,13 +201,26 @@ function updatePlayIcon() {
 
 // ================= NEXT / PREVIOUS =================
 function nextSong() {
-  currentIndex = (currentIndex + 1) % playlist.length;
+
+  if (playlist.length === 0) return;
+
+  currentIndex =
+    (currentIndex + 1) % playlist.length;
+
   playSong(currentIndex);
+
 }
 
 function prevSong() {
-  currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+
+  if (playlist.length === 0) return;
+
+  currentIndex =
+    (currentIndex - 1 + playlist.length) %
+    playlist.length;
+
   playSong(currentIndex);
+
 }
 
 
@@ -226,3 +277,45 @@ document.body.addEventListener("click", () => {
     player.unMute();
   }
 }, { once: true });
+
+
+// ================= OPEN PLAYER =================
+function openPlayer() {
+
+  // Hide home
+  document
+    .getElementById("homeScreen")
+    .classList.add("hidden");
+
+  // Show player
+  document
+    .getElementById("playerScreen")
+    .classList.remove("hidden");
+
+  // 🔥 Hide mini player
+  document
+    .querySelector(".mini-player")
+    .classList.add("hidden");
+
+}
+
+
+// ================= CLOSE PLAYER =================
+function closePlayer() {
+
+  // Hide player
+  document
+    .getElementById("playerScreen")
+    .classList.add("hidden");
+
+  // Show home
+  document
+    .getElementById("homeScreen")
+    .classList.remove("hidden");
+
+  // 🔥 Show mini player again
+  document
+    .querySelector(".mini-player")
+    .classList.remove("hidden");
+
+}
