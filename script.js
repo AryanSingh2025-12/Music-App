@@ -28,7 +28,7 @@ function onYouTubeIframeAPIReady() {
       },
 
       onStateChange: function (event) {
-        // 🔥 Auto next when song ends
+       
         if (event.data === YT.PlayerState.ENDED) {
           nextSong();
         }
@@ -68,6 +68,7 @@ async function searchSongs() {
     currentIndex = 0;
 
     displayResults(playlist);
+    loadSuggestions();
 
   } catch (err) {
     console.log("Search error:", err);
@@ -96,7 +97,78 @@ function displayResults(items) {
     results.appendChild(div);
   });
 }
+// ================= DISPLAY SUGGESTIONS =================
 
+function displaySuggestions(items) {
+
+  const suggestions = document.getElementById("suggestions");
+
+  if (!suggestions) return;
+
+  suggestions.innerHTML = "";
+
+  items.forEach((item, index) => {
+
+    if (!item.id.videoId) return;
+
+    const div = document.createElement("div");
+
+    div.className = "suggestion-card";
+
+    div.innerHTML = `
+      <img src="${item.snippet.thumbnails.high.url}">
+
+      <div class="suggestion-info">
+        <h4>${item.snippet.title}</h4>
+        <p>${item.snippet.channelTitle}</p>
+      </div>
+    `;
+
+    div.onclick = () => playSong(index);
+
+    suggestions.appendChild(div);
+
+  });
+}
+
+// ================= LOAD DIFFERENT SONG SUGGESTIONS =================
+async function loadSuggestions() {
+
+  // Different random music moods
+  const moods = [
+    "lofi songs",
+    "party songs",
+    "romantic songs",
+    "sad songs",
+    "english pop songs",
+    "bollywood hits",
+    "punjabi songs",
+    "workout music"
+  ];
+
+  // Random category
+  const randomMood =
+    moods[Math.floor(Math.random() * moods.length)];
+
+  try {
+
+    const res = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=8&q=${randomMood}&key=${API_KEY}`
+    );
+
+    const data = await res.json();
+
+    if (data.items) {
+      displaySuggestions(data.items);
+    }
+
+  } catch (err) {
+
+    console.log("Suggestion error:", err);
+
+  }
+
+}
 
 // ================= PLAY =================
 function playSong(index) {
@@ -117,12 +189,19 @@ function playSong(index) {
   const thumbnail = item.snippet.thumbnails.high.url;
 
 
-  // 🔥 OPEN PLAYER SCREEN
+  
   openPlayer();
 
 
   // ===== UPDATE UI =====
   document.getElementById("songTitle").innerText = title;
+
+  document.getElementById("topSongTitle").innerText = title;
+
+  document.getElementById("artistName").innerText =
+    item.snippet.channelTitle;
+
+  document.getElementById("miniAlbum").src = thumbnail;
 
   document.getElementById("albumImage").src = thumbnail;
 
@@ -292,7 +371,7 @@ function openPlayer() {
     .getElementById("playerScreen")
     .classList.remove("hidden");
 
-  // 🔥 Hide mini player
+  
   document
     .querySelector(".mini-player")
     .classList.add("hidden");
@@ -313,7 +392,7 @@ function closePlayer() {
     .getElementById("homeScreen")
     .classList.remove("hidden");
 
-  // 🔥 Show mini player again
+ 
   document
     .querySelector(".mini-player")
     .classList.remove("hidden");

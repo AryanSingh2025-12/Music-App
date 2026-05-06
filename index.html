@@ -4,12 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Music App</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Favicon Fix -->
+  <!-- Favicon -->
   <link rel="icon" href="data:,">
 </head>
 
@@ -17,103 +18,219 @@
 
   <div class="app">
 
-    <!-- ================= HOME SCREEN ================= -->
+    <!-- ================================================= -->
+    <!-- ================= HOME SCREEN =================== -->
+    <!-- ================================================= -->
+
     <div class="screen home-screen" id="homeScreen">
 
+      <!-- Logo -->
       <h2 class="title">🎧 Music App</h2>
 
       <!-- Search -->
       <div class="search-box">
+
         <input type="text" id="searchInput" placeholder="Search songs...">
 
-        <button onclick="searchSongs()">🔍</button>
+        <button onclick="searchSongs()">
+          🔍
+        </button>
+
       </div>
 
       <!-- Categories -->
       <div class="categories">
+
         <span class="active">All</span>
+
         <span>Party</span>
+
         <span>Blues</span>
+
         <span>Sad</span>
+
       </div>
 
-      <h3 class="section-title">Search Results</h3>
+      <!-- Heading -->
+      <h3 class="section-title">
+        Search Results
+      </h3>
 
-      <!-- Search Results -->
+      <!-- Results -->
       <div id="results"></div>
 
     </div>
 
 
+
+    <!-- ================================================= -->
     <!-- ================= PLAYER SCREEN ================= -->
+    <!-- ================================================= -->
+
     <div class="screen player-screen hidden" id="playerScreen">
 
-      <!-- Back Button -->
-      <button class="back-btn" onclick="closePlayer()">
-        ⬅
-      </button>
 
-      <!-- Album Image -->
+      <!-- ================= TOP BAR ================= -->
+
+      <div class="top-bar">
+
+        <!-- Back -->
+        <button onclick="closePlayer()">
+          <
+        </button>
+
+        <!-- Album Info -->
+        <div class="album-info">
+
+          <p>
+            PLAYING FROM ALBUM
+          </p>
+
+          <h3 id="topSongTitle">
+            No Song
+          </h3>
+
+        </div>
+
+        <!-- More -->
+        <button>
+          ⋮
+        </button>
+
+      </div>
+
+
+
+      <!-- ================= BIG ALBUM ================= -->
+
       <img id="albumImage" class="album" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4" alt="Album">
 
-      <!-- Neon Circle -->
-      <div class="player-circle">
 
-        <div class="inner-circle" onclick="togglePlay()">
-          ▶
+
+      <!-- ================= SONG INFO ================= -->
+
+      <div class="song-info">
+
+        <div class="song-left">
+
+          <!-- Mini Album -->
+          <img id="miniAlbum" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4" alt="Mini Album">
+
+          <!-- Song Text -->
+          <div class="song-text">
+
+            <!-- Sliding Title -->
+            <div class="song-title-wrapper">
+
+              <div id="songTitle" class="song-title">
+                No song selected
+              </div>
+
+            </div>
+
+            <!-- Artist -->
+            <p class="song-artist" id="artistName">
+              Unknown Artist
+            </p>
+
+          </div>
+
         </div>
 
-      </div>
-
-      <!-- Song Title -->
-      <div class="song-title-wrapper">
-
-        <h2 id="songTitle" class="song-title">
-          No song selected
-        </h2>
+        <!-- Add -->
+        <button class="add-btn">
+          +
+        </button>
 
       </div>
 
-      <p class="artist">
-        Select a song to play
-      </p>
 
-      <!-- ================= PROGRESS BAR ================= -->
-      <div class="progress-container" onclick="seek(event)">
 
-        <span id="currentTime">0:00</span>
+      <!-- ================= PROGRESS ================= -->
 
-        <div class="progress-bar">
+      <div class="progress-container">
+
+        <!-- Progress -->
+        <div class="progress-bar" onclick="seek(event)">
+
           <div id="progress"></div>
+
         </div>
 
-        <span id="duration">0:00</span>
+        <!-- Time -->
+        <div class="time-row">
+
+          <span id="currentTime">
+            0:00
+          </span>
+
+          <span id="duration">
+            0:00
+          </span>
+
+        </div>
 
       </div>
+
+
 
       <!-- ================= CONTROLS ================= -->
+
       <div class="controls">
 
-        <button onclick="prevSong()">
+        <!-- Previous -->
+        <button class="side-btn" onclick="prevSong()">
           ⏮
         </button>
 
-        <button onclick="togglePlay()">
-          ⏯
+        <!-- Play -->
+        <button class="play-btn" onclick="togglePlay()">
+          ▶
         </button>
 
-        <button onclick="nextSong()">
+        <!-- Next -->
+        <button class="side-btn" onclick="nextSong()">
           ⏭
         </button>
 
       </div>
 
+
+
+      <!-- ================= EXTRA OPTIONS ================= -->
+
+      <div class="extra-options">
+
+        <button>
+          🔀
+        </button>
+
+        <button>
+          🔗
+        </button>
+
+        <button>
+          ☰
+        </button>
+
+      </div>
+
+
+
       <!-- ================= VOLUME ================= -->
+
       <div class="volume-container">
 
-        <span>🔊</span>
-
         <input type="range" min="0" max="100" value="100" onchange="setVolume(this.value)">
+
+      </div>
+      <!-- ================= SUGGESTIONS ================= -->
+
+      <div class="suggestions-section">
+
+        <h3>Suggested Songs</h3>
+
+        <div id="suggestions"></div>
 
       </div>
 
@@ -122,13 +239,16 @@
   </div>
 
 
-  <!-- ================= MINI PLAYER ================= -->
+
+
+  <!-- ================= MINI PLAYER =================== -->
+
   <div class="mini-player" onclick="openPlayer()">
 
-    <!-- Mini Thumbnail -->
+    <!-- Image -->
     <img id="miniImg" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4" alt="Mini Album">
 
-    <!-- Mini Info -->
+    <!-- Song Info -->
     <div class="mini-info">
 
       <p id="miniTitle">
@@ -137,7 +257,7 @@
 
     </div>
 
-    <!-- Mini Play -->
+    <!-- Play -->
     <button class="mini-play-btn" onclick="togglePlay(event)">
       ⏯
     </button>
@@ -145,11 +265,19 @@
   </div>
 
 
-  <!-- ================= YOUTUBE PLAYER ================= -->
+
+
+  <!-- ================= YOUTUBE PLAYER ================ -->
+
+
   <div id="player"></div>
 
 
-  <!-- ================= SCRIPTS ================= -->
+
+
+  <!-- ================= SCRIPTS ======================= -->
+
+
   <script src="https://www.youtube.com/iframe_api"></script>
 
   <script src="script.js"></script>
