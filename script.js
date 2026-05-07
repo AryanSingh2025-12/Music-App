@@ -4,6 +4,7 @@ let playlist = [];
 let currentIndex = 0;
 let isPlaying = false;
 let playerReady = false;
+let playerState = "paused";
 
 const API_KEY = "AIzaSyBrqnMid4-06CT3eqBI3nu3o89MnhBfQVU";
 
@@ -241,30 +242,32 @@ function playSong(index) {
 // ================= PLAY / PAUSE =================
 function togglePlay(event) {
 
-  // Prevent mini player click conflict
   if (event) {
     event.stopPropagation();
   }
 
-  if (!playerReady) return;
+  const playBtn = document.getElementById("playBtn");
+  const miniPlayBtn = document.getElementById("miniPlayBtn");
 
-  if (isPlaying) {
+  if (playerState === "playing") {
 
     player.pauseVideo();
 
-    isPlaying = false;
+    playerState = "paused";
+
+    playBtn.innerHTML = "▶";
+    miniPlayBtn.innerHTML = "▶";
 
   } else {
 
     player.playVideo();
 
-    player.unMute();
+    playerState = "playing";
 
-    isPlaying = true;
+    playBtn.innerHTML = "⏸";
+    miniPlayBtn.innerHTML = "⏸";
 
   }
-
-  updatePlayIcon();
 
 }
 
