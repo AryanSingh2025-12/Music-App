@@ -1,6 +1,8 @@
 // ================= VARIABLES =================
 let player;
 let playlist = [];
+let recentlyPlayed = [];
+let queue = [];
 let currentIndex = 0;
 let isPlaying = false;
 let playerReady = false;
@@ -29,7 +31,7 @@ function onYouTubeIframeAPIReady() {
       },
 
       onStateChange: function (event) {
-       
+
         if (event.data === YT.PlayerState.ENDED) {
           nextSong();
         }
@@ -132,43 +134,82 @@ function displaySuggestions(items) {
   });
 }
 
-// ================= LOAD DIFFERENT SONG SUGGESTIONS =================
-async function loadSuggestions() {
-
-  // Different random music moods
-  const moods = [
-    "lofi songs",
-    "party songs",
-    "romantic songs",
-    "sad songs",
-    "english pop songs",
-    "bollywood hits",
-    "punjabi songs",
-    "workout music"
-  ];
-
-  // Random category
-  const randomMood =
-    moods[Math.floor(Math.random() * moods.length)];
+// ================= SMART MUSIC SUGGESTIONS =================
+async function loadSuggestions(title, artist) {
 
   try {
 
+    // 🔥 Create smart search query
+    const query =
+      `${title} ${artist} similar songs playlist`;
+
     const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=8&q=${randomMood}&key=${API_KEY}`
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=8&q=${query}&key=${API_KEY}`
     );
 
     const data = await res.json();
 
     if (data.items) {
+
       displaySuggestions(data.items);
+
     }
 
   } catch (err) {
 
-    console.log("Suggestion error:", err);
+    console.log("Suggestion Error:", err);
 
   }
 
+}
+
+function renderRecentlyPlayed() {
+
+  const container =
+    document.getElementById("recentlyPlayed");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  recentlyPlayed.forEach(song => {
+
+    const div = document.createElement("div");
+
+    div.className = "recent-card";
+
+    div.innerHTML = `
+      <img src="${song.thumbnail}">
+      <p>${song.title}</p>
+    `;
+
+    container.appendChild(div);
+
+  });
+}
+
+function renderQueue() {
+
+  const container =
+    document.getElementById("queueList");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  queue.forEach(song => {
+
+    const div = document.createElement("div");
+
+    div.className = "queue-item";
+
+    div.innerHTML = `
+      <p>${song.snippet.title}</p>
+    `;
+
+    container.appendChild(div);
+
+  });
 }
 
 // ================= PLAY =================
@@ -187,10 +228,15 @@ function playSong(index) {
 
   const title = item.snippet.title;
 
+  const mood = detectMood(title);
+  document.getElementById("songMood").innerText = mood;
+
+  const artist = item.snippet.channelTitle;
+
   const thumbnail = item.snippet.thumbnails.high.url;
 
 
-  
+
   openPlayer();
 
 
@@ -231,10 +277,39 @@ function playSong(index) {
 
   }, 500);
 
-
+  loadSuggestions(title, artist);
   isPlaying = true;
 
   updatePlayIcon();
+
+  // change 
+
+  recentlyPlayed.unshift({
+    title,
+    thumbnail
+  });
+
+  recentlyPlayed = recentlyPlayed.slice(0, 5);
+
+  renderRecentlyPlayed();
+
+  const colors = [
+    "#3b1d1d",
+    "#0b2b3b",
+    "#1f3b0b",
+    "#3b0b33",
+    "#2d1b0f"
+  ];
+
+  const randomColor =
+    colors[Math.floor(Math.random() * colors.length)];
+
+  document.querySelector(".player-screen").style.background =
+    `linear-gradient(to bottom, ${randomColor}, #000)`;
+
+  queue = playlist.slice(index + 1);
+
+  renderQueue();
 
 }
 
@@ -374,7 +449,7 @@ function openPlayer() {
     .getElementById("playerScreen")
     .classList.remove("hidden");
 
-  
+
   document
     .querySelector(".mini-player")
     .classList.add("hidden");
@@ -395,9 +470,46 @@ function closePlayer() {
     .getElementById("homeScreen")
     .classList.remove("hidden");
 
- 
+
   document
     .querySelector(".mini-player")
     .classList.remove("hidden");
 
+}
+
+
+function detectMood(title) {
+
+  title = title.toLowerCase();
+
+  if (
+    title.includes("sad") ||
+    title.includes("alone") ||
+    title.includes("broken")
+  ) {
+    return "Sad 😔";
+  }
+
+  if (
+    title.includes("love") ||
+    title.includes("romantic")
+  ) {
+    return "Romantic ❤️";
+  }
+
+  if (
+    title.includes("party") ||
+    title.includes("dance")
+  ) {
+    return "Party 🔥";
+  }
+
+  if (
+    title.includes("lofi") ||
+    title.includes("chill")
+  ) {
+    return "Chill 🌙";
+  }
+
+  return "Music 🎵";
 }

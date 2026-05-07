@@ -24,8 +24,11 @@
 
     <div class="screen home-screen" id="homeScreen">
 
+
       <!-- Logo -->
       <h2 class="title">🎧 Music App</h2>
+
+
 
       <!-- Search -->
       <div class="search-box">
@@ -50,6 +53,11 @@
         <span>Sad</span>
 
       </div>
+
+      <h3>Recently Played</h3>
+
+      <div id="recentlyPlayed"></div>
+
 
       <!-- Heading -->
       <h3 class="section-title">
@@ -132,6 +140,10 @@
               Unknown Artist
             </p>
 
+            <p id="songMood" class="song-mood">
+              Music 🎵
+            </p>
+
           </div>
 
         </div>
@@ -141,6 +153,15 @@
           +
         </button>
 
+      </div>
+
+      <!-- change  -->
+
+      <div class="genre-chips">
+        <span>Pop</span>
+        <span>Chill</span>
+        <span>LoFi</span>
+        <span>Romantic</span>
       </div>
 
 
@@ -223,6 +244,16 @@
         <input type="range" min="0" max="100" value="100" onchange="setVolume(this.value)">
 
       </div>
+
+      <!-- add Queue  -->
+
+      <div class="queue-panel">
+
+        <h3>Queue</h3>
+
+        <div id="queueList"></div>
+
+      </div>
       <!-- ================= SUGGESTIONS ================= -->
 
       <div class="suggestions-section">
@@ -230,6 +261,16 @@
         <h3>Suggested Songs</h3>
 
         <div id="suggestions"></div>
+
+      </div>
+
+      <div class="lyrics-panel">
+
+        <h3>Lyrics</h3>
+
+        <div id="lyricsText">
+          Lyrics coming soon...
+        </div>
 
       </div>
 
